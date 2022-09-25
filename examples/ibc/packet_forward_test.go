@@ -27,13 +27,7 @@ func TestPacketForwardMiddleware(t *testing.T) {
 	ctx := context.Background()
 
 	cf := ibctest.NewBuiltinChainFactory(zaptest.NewLogger(t), []*ibctest.ChainSpec{
-		{Name: "gaia", ChainConfig: ibc.ChainConfig{
-			Images: []ibc.DockerImage{{
-				Repository: "gaia",
-				Version:    "local",
-				UidGid:     "1025:1025",
-			}},
-		}},
+		{Name: "gaia", Version: "andrew-packet_forward_middleware"},
 		{Name: "osmosis", Version: "v11.0.1"},
 		{Name: "juno", Version: "v9.0.0"},
 	})
