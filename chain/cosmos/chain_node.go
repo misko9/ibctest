@@ -226,7 +226,7 @@ func (tn *ChainNode) SetTestConfig(ctx context.Context) error {
 
 	c["rpc"] = rpc
 
-	return configutil.ModifyTomlConfigFile(
+	if err := configutil.ModifyTomlConfigFile(
 		ctx,
 		tn.logger(),
 		tn.DockerClient,
@@ -234,6 +234,20 @@ func (tn *ChainNode) SetTestConfig(ctx context.Context) error {
 		tn.VolumeName,
 		"config/config.toml",
 		c,
+	); err != nil {
+		return err
+	}
+
+	a := make(configutil.Toml)
+	a["minimum-gas-prices"] = tn.Chain.Config().GasPrices
+	return configutil.ModifyTomlConfigFile(
+		ctx,
+		tn.logger(),
+		tn.DockerClient,
+		tn.TestName,
+		tn.VolumeName,
+		"config/app.toml",
+		a,
 	)
 }
 
